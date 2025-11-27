@@ -1,48 +1,9 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
-
-/**
- * @title TokenSeer Analytics
- * @dev A comprehensive smart contract for tracking and analyzing token metrics on-chain
- * @notice This contract provides real-time analytics capabilities for ERC20 token interactions
- */
-contract Project {
-    
-    // State Variables
+State Variables
     address public owner;
     uint256 public totalTransactionsTracked;
     uint256 public totalTokensAnalyzed;
     
-    // Structs
-    struct TokenMetrics {
-        address tokenAddress;
-        string tokenName;
-        string tokenSymbol;
-        uint256 totalSupply;
-        uint256 transactionCount;
-        uint256 uniqueHolders;
-        uint256 lastUpdated;
-        bool isActive;
-    }
-    
-    struct TransactionData {
-        address tokenAddress;
-        address from;
-        address to;
-        uint256 amount;
-        uint256 timestamp;
-        string transactionType;
-    }
-    
-    struct AnalyticsSnapshot {
-        uint256 snapshotId;
-        address tokenAddress;
-        uint256 volume24h;
-        uint256 avgTransactionSize;
-        uint256 timestamp;
-    }
-    
-    // Mappings
+    Mappings
     mapping(address => TokenMetrics) public tokenMetrics;
     mapping(address => bool) public isTokenRegistered;
     mapping(uint256 => TransactionData) public transactions;
@@ -50,34 +11,14 @@ contract Project {
     mapping(address => mapping(address => bool)) public hasInteracted;
     mapping(uint256 => AnalyticsSnapshot) public snapshots;
     
-    // Arrays
-    address[] public registeredTokens;
-    uint256 public snapshotCounter;
-    
-    // Events
+    Events
     event TokenRegistered(address indexed tokenAddress, string tokenName, string tokenSymbol, uint256 timestamp);
     event TransactionRecorded(uint256 indexed transactionId, address indexed tokenAddress, address from, address to, uint256 amount);
     event MetricsUpdated(address indexed tokenAddress, uint256 transactionCount, uint256 uniqueHolders, uint256 timestamp);
     event SnapshotCreated(uint256 indexed snapshotId, address indexed tokenAddress, uint256 volume24h, uint256 timestamp);
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     
-    // Modifiers
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Only owner can call this function");
-        _;
-    }
-    
-    modifier tokenExists(address _tokenAddress) {
-        require(isTokenRegistered[_tokenAddress], "Token not registered");
-        _;
-    }
-    
-    modifier validAddress(address _address) {
-        require(_address != address(0), "Invalid address");
-        _;
-    }
-    
-    // Constructor
+    Constructor
     constructor() {
         owner = msg.sender;
         totalTransactionsTracked = 0;
@@ -151,11 +92,7 @@ contract Project {
         tokenTransactionIds[_tokenAddress].push(transactionId);
         totalTransactionsTracked++;
         
-        // Update token metrics
-        tokenMetrics[_tokenAddress].transactionCount++;
-        tokenMetrics[_tokenAddress].lastUpdated = block.timestamp;
-        
-        // Track unique holders
+        Track unique holders
         if (!hasInteracted[_tokenAddress][_from]) {
             hasInteracted[_tokenAddress][_from] = true;
             tokenMetrics[_tokenAddress].uniqueHolders++;
@@ -279,4 +216,6 @@ contract Project {
         return (totalTokensAnalyzed, totalTransactionsTracked, snapshotCounter);
     }
 }
-
+// 
+End
+// 
