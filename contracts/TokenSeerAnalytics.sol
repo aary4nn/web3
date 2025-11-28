@@ -217,5 +217,5 @@ State Variables
     }
 }
 // 
-End
+Contract End
 // 
